@@ -1,8 +1,12 @@
 require "bundler/setup"
 require "wisper_next"
 
+require 'pry' unless ENV['CI']
+
 RSpec.configure do |config|
   config.order = :random
+
+  config.filter_run_when_matching :focus
 
   config.example_status_persistence_file_path = ".rspec_status"
 

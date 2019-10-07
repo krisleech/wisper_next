@@ -1,3 +1,5 @@
+require_relative 'callable_listener'
+
 module WisperNext
 
   # Extension to provide objects with subscription and publishing capabilties
@@ -64,6 +66,19 @@ module WisperNext
       def subscribe(listener)
         raise ListenerAlreadyRegisteredError.new(listener) if subscribed?(listener)
         subscribers.push(listener)
+        self
+      end
+
+      # subscribes the given block to an event
+      #
+      # @param [String, Symbol] event name
+      #
+      # @return [Object] self
+      #
+      # @api public
+      #
+      def on(name, &block)
+        subscribe(CallableListener.new(name, block))
         self
       end
 

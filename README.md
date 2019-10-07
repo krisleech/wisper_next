@@ -27,6 +27,8 @@ by an optional payload.
 
 ### Listeners
 
+#### Objects
+
 ```ruby
 class MyListener
   def on_event(event_name, payload)
@@ -40,6 +42,16 @@ We can then subscribe an instance of our listener to the publisher:
 ```ruby
 publisher = MyPublisher.new
 publisher.subscribe(MyListener.new)
+publisher.call
+```
+
+#### Blocks
+
+Blocks can be subscribed to a specific event name.
+
+```ruby
+publisher = MyPublisher.new
+publisher.on(:wow) { |payload| puts(payload) }
 publisher.call
 ```
 
