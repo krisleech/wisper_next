@@ -55,6 +55,28 @@ publisher.on(:wow) { |payload| puts(payload) }
 publisher.call
 ```
 
+### Enhanced Listeners
+
+By including `Wisper.subscriber` you can get additional features.
+
+Firstly instead of `#on_event` you provide a method for every event the
+listener may receive. For example if our publisher broadcasts a "user_created"
+event then the listener would provide a `user_created` method which receives
+the payload.
+
+```ruby
+class MyListener
+  include Wisper.subscriber
+  
+  def user_created(payload)
+    #...
+  end
+end
+```
+
+If the listener receives an event for which there is no method an exception
+is raised.
+
 ## Development
 
 ## Contributing
