@@ -10,6 +10,39 @@ gem 'wisper_next'
 
 ## Usage
 
+### Publishing
+
+```ruby
+class MyPublisher
+  include WisperNext.publisher
+
+  def call
+    broadcast(:wow, x: rand(10), y: rand(10), at: Time.now)
+  end
+end
+```
+
+A publisher can broadcast events, the first argument is the event name followed
+by an optional payload.
+
+### Listeners
+
+```ruby
+class MyListener
+  def on_event(event_name, payload)
+    puts "#{event_name} received with #{payload.inspect}"
+  end
+end
+```
+
+We can then subscribe an instance of our listener to the publisher:
+
+```ruby
+publisher = MyPublisher.new
+publisher.subscribe(MyListener.new)
+publisher.call
+```
+
 ## Development
 
 ## Contributing
