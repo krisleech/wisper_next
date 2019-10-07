@@ -77,6 +77,12 @@ end
 If the listener receives an event for which there is no method an exception
 is raised.
 
+You can opt-out of this behaviour by setting the `strict` option to false:
+
+```ruby
+include Wisper.subscriber(strict: false)
+```
+
 ## Development
 
 ## Contributing

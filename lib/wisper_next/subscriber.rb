@@ -1,5 +1,29 @@
 module WisperNext
   class Subscriber < Module
+    def initialize(options = {})
+      strict = options.fetch(:strict, true)
+
+      # maps event to another method
+      #
+      # @param [Symbol] event name
+      #
+      # @return [Object] payload
+      #
+      # @api public
+      #
+      define_method :on_event do |name, payload|
+        if respond_to?(name)
+          public_send(name, payload)
+        else
+          if strict
+            raise NoMethodError.new(name)
+          else
+            # no-op
+          end
+        end
+      end
+    end
+
     def included(descendant)
       super
       descendant.send(:include, Methods)
@@ -13,21 +37,6 @@ module WisperNext
     end
 
     module Methods
-      # maps event to another method
-      #
-      # @param [Symbol] event name
-      #
-      # @return [Object] payload
-      #
-      # @api public
-      #
-      def on_event(name, payload)
-        if respond_to?(name)
-          public_send(name, payload)
-        else
-          raise NoMethodError.new(name)
-        end
-      end
     end
   end
 end

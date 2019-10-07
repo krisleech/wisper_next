@@ -20,6 +20,16 @@ RSpec.describe WisperNext::Subscriber do
       it 'raises an error' do
         expect { subject.on_event(event_name, payload) }.to raise_error(WisperNext::Subscriber::NoMethodError)
       end
+
+      describe 'and strict option is false' do
+        subject(:subscriber) do
+          Class.new { include WisperNext.subscriber(strict: false) }.new
+        end
+
+        it 'does not raise an error' do
+          expect { subject.on_event(event_name, payload) }.not_to raise_error
+        end
+      end
     end
   end
 end

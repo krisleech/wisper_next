@@ -9,7 +9,7 @@ module WisperNext
     Publisher.new
   end
 
-  def self.subscriber
-    Subscriber.new
+  def self.subscriber(*args)
+    Subscriber.new(*args)
   end
 end
