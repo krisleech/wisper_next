@@ -83,6 +83,20 @@ You can opt-out of this behaviour by setting the `strict` option to false:
 include Wisper.subscriber(strict: false)
 ```
 
+#### Prefixing broadcast events
+
+The method called can be prefixed with `on_`:
+
+```ruby
+class MyListener
+  include Wisper.subscriber(prefix: true)
+  
+  def on_user_created(payload)
+    #...
+  end
+end
+```
+
 #### Handling Events Asynchronously
 
 WisperNext has adapters for asynchronous event handling, please refer to

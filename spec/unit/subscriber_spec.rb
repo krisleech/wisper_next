@@ -32,6 +32,14 @@ RSpec.describe WisperNext::Subscriber do
       end
     end
 
+    describe 'when prefix option is set to true' do
+      subject(:subscriber) { Class.new { include WisperNext.subscriber(prefix: true) }.new }
+      it 'prefixes the method with "on_"' do
+        expect(subject).to receive("on_" + event_name).with(payload)
+        subject.on_event(event_name, payload)
+      end
+    end
+
     describe 'when async option is set to true' do
       let(:async_broadcaster_class) { double(new: async_broadcaster) }
       let(:async_broadcaster) { double }
@@ -65,7 +73,7 @@ RSpec.describe WisperNext::Subscriber do
 
       describe 'and broadcaster is a symbol' do
         let(:sidekiq_broadcaster_class) { double(new: sidekiq_broadcaster) }
-        let(:sidekiq_broadcaster) { double }
+        let(:sidekiq_broadcaster)       { double }
 
         before { stub_const('WisperNext::Subscriber::SidekiqBroadcaster', sidekiq_broadcaster_class) }
 

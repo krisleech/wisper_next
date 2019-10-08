@@ -5,6 +5,7 @@ module WisperNext
     def initialize(options = {})
       strict = options.fetch(:strict, true)
       broadcaster = resolve_broadcaster(options.fetch(:broadcaster, options[:async] ? :async : DefaultBroadcasterKey))
+      prefix = options.fetch(:prefix, false)
 
       # maps event to another method
       #
@@ -15,8 +16,10 @@ module WisperNext
       # @api public
       #
       define_method :on_event do |name, payload|
-        if respond_to?(name)
-          broadcaster.call(self, name, payload)
+        method_name = resolve_method_name(name, prefix)
+
+        if respond_to?(method_name)
+          broadcaster.call(self, method_name, payload)
         else
           if strict
             raise NoMethodError.new(name)
@@ -40,9 +43,17 @@ module WisperNext
     end
 
     module Methods
+      def resolve_method_name(name, prefix)
+        if prefix
+          "on_#{name}"
+        else
+          name
+        end
+      end
     end
 
     private
+
 
     def resolve_broadcaster(key_or_object)
       if key_or_object.is_a?(Symbol)
