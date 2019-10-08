@@ -31,5 +31,35 @@ RSpec.describe WisperNext::Subscriber do
         end
       end
     end
+
+    describe 'when async option is set to true' do
+      let(:async_broadcaster) { double }
+
+      before { stub_const('WisperNext::Subscriber::AsyncBroadcaster', async_broadcaster) }
+
+      subject(:subscriber) { Class.new { include WisperNext.subscriber(async: true) }.new }
+
+      it 'uses async broadcaster' do
+        allow(subscriber).to receive(event_name)
+        expect(async_broadcaster).to receive(:call).with(subscriber, event_name, payload)
+        subject.on_event(event_name, payload)
+      end
+    end
+
+    describe 'when broadcaster option is set' do
+      describe 'and broadcaster is a symbol' do
+        let(:sidekiq_broadcaster) { double }
+
+        before { stub_const('WisperNext::Subscriber::SidekiqBroadcaster', sidekiq_broadcaster) }
+
+        subject(:subscriber) { Class.new { include WisperNext.subscriber(broadcaster: :sidekiq) }.new }
+
+        it 'maps symbol to a broadcaster class' do
+          allow(subscriber).to receive(event_name)
+          expect(sidekiq_broadcaster).to receive(:call).with(subscriber, event_name, payload)
+          subject.on_event(event_name, payload)
+        end
+      end
+    end
   end
 end

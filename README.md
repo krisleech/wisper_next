@@ -83,6 +83,15 @@ You can opt-out of this behaviour by setting the `strict` option to false:
 include Wisper.subscriber(strict: false)
 ```
 
+#### Handling Events Asynchronously
+
+WisperNext has adapters for asynchronous event handling, please refer to
+<TODO>.
+
+```ruby
+include Wisper.subscriber(async: :true)
+```
+
 ## Development
 
 ## Contributing

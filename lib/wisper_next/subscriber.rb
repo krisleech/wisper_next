@@ -1,7 +1,10 @@
 module WisperNext
   class Subscriber < Module
+    DefaultBroadcasterKey = :send
+
     def initialize(options = {})
       strict = options.fetch(:strict, true)
+      broadcaster = resolve_broadcaster(options.fetch(:broadcaster, options[:async] ? :async : DefaultBroadcasterKey))
 
       # maps event to another method
       #
@@ -13,7 +16,7 @@ module WisperNext
       #
       define_method :on_event do |name, payload|
         if respond_to?(name)
-          public_send(name, payload)
+          broadcaster.call(self, name, payload)
         else
           if strict
             raise NoMethodError.new(name)
@@ -38,5 +41,13 @@ module WisperNext
 
     module Methods
     end
+
+    private
+
+    def resolve_broadcaster(key)
+      Kernel.const_get("::#{self.class.name}::#{key.to_s.capitalize}Broadcaster")
+    end
   end
 end
+
+require_relative 'subscriber/send_broadcaster'
