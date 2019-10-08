@@ -106,6 +106,9 @@ WisperNext has adapters for asynchronous event handling, please refer to
 include Wisper.subscriber(async: :true)
 ```
 
+If you are interested in building an async adapter and releasing it as a gem
+please get in touch.
+
 ## Development
 
 ## Contributing

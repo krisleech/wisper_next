@@ -1,11 +1,13 @@
 module WisperNext
   class Subscriber < Module
     DefaultBroadcasterKey = :send
+    EmptyHash = {}.freeze
 
     def initialize(options = {})
-      strict = options.fetch(:strict, true)
-      broadcaster = resolve_broadcaster(options.fetch(:broadcaster, options[:async] ? :async : DefaultBroadcasterKey))
-      prefix = options.fetch(:prefix, false)
+      strict           = options.fetch(:strict, true)
+      broadcaster_opts = options[:async].is_a?(Hash) ? options[:async] : EmptyHash
+      broadcaster      = resolve_broadcaster(options.fetch(:broadcaster, options[:async] ? :async : DefaultBroadcasterKey), broadcaster_opts)
+      prefix           = options.fetch(:prefix, false)
 
       # maps event to another method
       #
@@ -54,10 +56,9 @@ module WisperNext
 
     private
 
-
-    def resolve_broadcaster(key_or_object)
+    def resolve_broadcaster(key_or_object, options)
       if key_or_object.is_a?(Symbol)
-        Kernel.const_get("::#{self.class.name}::#{key_or_object.to_s.capitalize}Broadcaster").new
+        Kernel.const_get("::#{self.class.name}::#{key_or_object.to_s.capitalize}Broadcaster").new(options)
       else
         key_or_object
       end

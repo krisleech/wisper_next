@@ -40,19 +40,31 @@ RSpec.describe WisperNext::Subscriber do
       end
     end
 
-    describe 'when async option is set to true' do
-      let(:async_broadcaster_class) { double(new: async_broadcaster) }
-      let(:async_broadcaster) { double }
+    describe 'when async option is set' do
+      describe 'to true' do
+        let(:async_broadcaster_class) { double(new: async_broadcaster) }
+        let(:async_broadcaster) { double }
 
-      before { stub_const('WisperNext::Subscriber::AsyncBroadcaster', async_broadcaster_class) }
+        before { stub_const('WisperNext::Subscriber::AsyncBroadcaster', async_broadcaster_class) }
 
-      subject(:subscriber) { Class.new { include WisperNext.subscriber(async: true) }.new }
+        subject(:subscriber) { Class.new { include WisperNext.subscriber(async: true) }.new }
 
-      it 'uses async broadcaster' do
-        allow(subscriber).to receive(event_name)
-        allow(async_broadcaster_class).to receive(:new).and_return(async_broadcaster)
-        expect(async_broadcaster).to receive(:call).with(subscriber, event_name, payload)
-        subject.on_event(event_name, payload)
+        it 'uses async broadcaster' do
+          allow(subscriber).to receive(event_name)
+          allow(async_broadcaster_class).to receive(:new).and_return(async_broadcaster)
+          expect(async_broadcaster).to receive(:call).with(subscriber, event_name, payload)
+          subject.on_event(event_name, payload)
+        end
+      end
+
+      describe 'to a Hash' do
+        it 'passes hash as arguments to broadcaster #initialize' do
+          async_broadcaster_class = double
+          stub_const('WisperNext::Subscriber::AsyncBroadcaster', async_broadcaster_class)
+          options = { queue: 'priority' }
+          expect(async_broadcaster_class).to receive(:new).with(options)
+          Class.new { include WisperNext.subscriber(async: options) }.new
+        end
       end
     end
 
