@@ -44,8 +44,12 @@ module WisperNext
 
     private
 
-    def resolve_broadcaster(key)
-      Kernel.const_get("::#{self.class.name}::#{key.to_s.capitalize}Broadcaster")
+    def resolve_broadcaster(key_or_object)
+      if key_or_object.is_a?(Symbol)
+        Kernel.const_get("::#{self.class.name}::#{key_or_object.to_s.capitalize}Broadcaster")
+      else
+        key_or_object
+      end
     end
   end
 end

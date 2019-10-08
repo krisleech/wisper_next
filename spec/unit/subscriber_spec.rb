@@ -47,6 +47,20 @@ RSpec.describe WisperNext::Subscriber do
     end
 
     describe 'when broadcaster option is set' do
+      describe 'and broadcaster is an object' do
+        before { stub_const("MyBroadcaster", broadcaster) }
+
+        let(:broadcaster) { double }
+
+        subject(:subscriber) { Class.new { include WisperNext.subscriber(broadcaster: MyBroadcaster) }.new }
+
+        it 'calls object' do
+          allow(subscriber).to receive(event_name)
+          expect(broadcaster).to receive(:call).with(subscriber, event_name, payload)
+          subject.on_event(event_name, payload)
+        end
+      end
+
       describe 'and broadcaster is a symbol' do
         let(:sidekiq_broadcaster) { double }
 
