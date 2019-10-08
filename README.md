@@ -109,6 +109,15 @@ include Wisper.subscriber(async: :true)
 If you are interested in building an async adapter and releasing it as a gem
 please get in touch.
 
+#### Passing options
+
+If the value for an option being passed to subscriber is `true` then you can
+use a symbol instead to mean the same thing.
+
+So `WisperNext.subscriber(async: true)` and `WisperNext.subscriber(:async)` are
+the same. You can pass multiple symbols with any key/values at the end,
+e.g. `WisperNext.subscriber(:async, :prefix, strict: false)`.
+
 ## Development
 
 ## Contributing

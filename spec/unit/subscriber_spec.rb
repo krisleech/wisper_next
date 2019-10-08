@@ -5,6 +5,15 @@ RSpec.describe WisperNext::Subscriber do
     Class.new { include WisperNext.subscriber }.new
   end
 
+  describe '#initialize' do
+    describe 'when given symbols' do
+      it 'expands them to hash keys with a value of true' do
+        subject = described_class.new(:strict)
+        expect(subject.options).to include(strict: true)
+      end
+    end
+  end
+
   describe '#on_event' do
     let(:event_name) { 'hello' }
     let(:payload)    { SecureRandom.uuid }
