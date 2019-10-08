@@ -5,8 +5,7 @@ module WisperNext
 
     def initialize(options = {})
       strict           = options.fetch(:strict, true)
-      broadcaster_opts = options[:async].is_a?(Hash) ? options[:async] : EmptyHash
-      broadcaster      = resolve_broadcaster(options.fetch(:broadcaster, options[:async] ? :async : DefaultBroadcasterKey), broadcaster_opts)
+      broadcaster      = resolve_broadcaster(options)
       prefix           = options.fetch(:prefix, false)
 
       # maps event to another method
@@ -56,11 +55,19 @@ module WisperNext
 
     private
 
-    def resolve_broadcaster(key_or_object, options)
-      if key_or_object.is_a?(Symbol)
-        Kernel.const_get("::#{self.class.name}::#{key_or_object.to_s.capitalize}Broadcaster").new(options)
+    def resolve_broadcaster(options)
+      if options.has_key?(:async)
+        broadcaster_opts = options[:async].is_a?(Hash) ? options[:async] : EmptyHash
+        broadcaster = :async
       else
-        key_or_object
+        broadcaster = options.fetch(:broadcaster, DefaultBroadcasterKey)
+        broadcaster_opts = EmptyHash
+      end
+
+      if broadcaster.is_a?(Symbol)
+        Kernel.const_get("::#{self.class.name}::#{broadcaster.to_s.capitalize}Broadcaster").new(broadcaster_opts)
+      else
+        broadcaster
       end
     end
   end
