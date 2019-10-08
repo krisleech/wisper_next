@@ -4,8 +4,16 @@
 module WisperNext
   class Subscriber
     class SendBroadcaster
-      def self.call(subscriber, event_name, payload)
-        subscriber.public_send(event_name, payload)
+      def initialize(options = {})
+        @public_send = options.fetch(:public_send, true)
+      end
+
+      def call(subscriber, event_name, payload)
+        if @public_send
+          subscriber.public_send(event_name, payload)
+        else
+          subscriber.send(event_name, payload)
+        end
       end
     end
   end
