@@ -1,16 +1,16 @@
+require_relative 'desugar_arguments'
+
 module WisperNext
   class Subscriber < Module
     DefaultBroadcasterKey = :send
     EmptyHash = {}.freeze
 
-    attr_reader :options
-
     def initialize(*args)
-      @options = expand_args(args)
+      options = DesugarArguments.(args)
 
-      strict           = options.fetch(:strict, true)
-      broadcaster      = resolve_broadcaster(options)
-      prefix           = options.fetch(:prefix, false)
+      strict      = options.fetch(:strict, true)
+      broadcaster = resolve_broadcaster(options)
+      prefix      = options.fetch(:prefix, false)
 
       # maps event to another method
       #
@@ -58,21 +58,6 @@ module WisperNext
     end
 
     private
-
-    def expand_args(args)
-      args.reduce({}) do |memo, item|
-        case item
-        when Symbol
-          memo[item] = true
-        when Hash
-          memo.merge!(item)
-        else
-          raise(ArgumentError, "Unsupported option: #{item.inspect} (#{item.class.name})")
-        end
-
-        memo
-      end
-    end
 
     def resolve_broadcaster(options)
       if options.has_key?(:async)

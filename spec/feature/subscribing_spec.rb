@@ -1,6 +1,6 @@
 require 'securerandom'
 
-RSpec.describe 'publishing locally' do
+RSpec.describe 'publishing' do
   let(:publisher) do
     Class.new do
       include WisperNext.publisher
