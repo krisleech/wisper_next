@@ -27,7 +27,7 @@ RSpec.describe WisperNext::CallableListener do
   end
 
   describe '#==' do
-    describe 'when given objects name and block are the same' do
+    describe 'when given object\'s name and block are the same' do
       it 'returns true' do
         other = described_class.new(event_name, callable)
         expect(subject == other).to eq(true)
