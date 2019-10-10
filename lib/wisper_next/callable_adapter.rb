@@ -1,9 +1,9 @@
-# Wraps a callable (e.g. block) so it can be subscribed as a listener
+# Wraps a callable (typically a proc) so it conforms to the listener interface
 #
 # @api private
 #
 module WisperNext
-  class CallableListener
+  class CallableAdapter
     attr_reader :event_name, :callable
 
     def initialize(event_name, callable)
