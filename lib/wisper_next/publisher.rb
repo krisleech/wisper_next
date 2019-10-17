@@ -78,6 +78,7 @@ module WisperNext
       # @api public
       #
       def on(name, &block)
+        raise ArgumentError, 'must pass a block' unless block_given?
         subscribe(CallableAdapter.new(name, block))
         self
       end

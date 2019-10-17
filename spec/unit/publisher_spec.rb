@@ -29,6 +29,24 @@ RSpec.describe WisperNext::Publisher do
     end
   end
 
+  describe '#on' do
+    it 'subscribes given listener' do
+      block = lambda {}
+      publisher.on(:something, &block)
+      expect(publisher.subscribed?(block)).to eq(true)
+    end
+
+    it 'returns self' do
+      expect(publisher.on(:something) {}).to eq(publisher)
+    end
+
+    describe 'when no block given' do
+      it 'raises an error' do
+        expect { publisher.on(:something) }.to raise_error(ArgumentError)
+      end
+    end
+  end
+
   describe '#broadcast' do
     it 'calls on_event on subscribed listeners' do
       publisher.subscribe(listener)

@@ -19,7 +19,7 @@ module WisperNext
     end
 
     def ==(other)
-      other.is_a?(self.class) && other.event_name == @event_name && other.callable == @callable
+      other == callable
     end
   end
 end

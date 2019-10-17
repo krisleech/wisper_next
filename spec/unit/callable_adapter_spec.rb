@@ -27,21 +27,14 @@ RSpec.describe WisperNext::CallableAdapter do
   end
 
   describe '#==' do
-    describe 'when given object\'s name and block are the same' do
+    describe 'when given object is the callable' do
       it 'returns true' do
         other = described_class.new(event_name, callable)
         expect(subject == other).to eq(true)
       end
     end
 
-    describe 'when name is different' do
-      it 'returns false' do
-        other = described_class.new(:other, callable)
-        expect(subject == other).to eq(false)
-      end
-    end
-
-    describe 'when block is different' do
+    describe 'when given object is not the callable' do
       it 'returns false' do
         other = described_class.new(event_name, lambda {})
         expect(subject == other).to eq(false)
