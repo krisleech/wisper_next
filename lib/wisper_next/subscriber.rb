@@ -21,7 +21,7 @@ module WisperNext
       # @api public
       #
       define_method :on_event do |name, payload|
-        method_name = resolve_method_name(name, prefix)
+        method_name = ResolveMethod.(name, prefix)
 
         if respond_to?(method_name)
           broadcaster.call(self, method_name, payload)
@@ -35,25 +35,10 @@ module WisperNext
       end
     end
 
-    def included(descendant)
-      super
-      descendant.send(:include, Methods)
-    end
-
     NoMethodError = Class.new(StandardError) do
       # @api private
       def initialize(event_name)
         super("No method found for #{event_name} event")
-      end
-    end
-
-    module Methods
-      def resolve_method_name(name, prefix)
-        if prefix
-          "on_#{name}"
-        else
-          name
-        end
       end
     end
 
@@ -78,3 +63,4 @@ module WisperNext
 end
 
 require_relative 'subscriber/send_broadcaster'
+require_relative 'subscriber/resolve_method'

@@ -5,6 +5,13 @@ RSpec.describe WisperNext::Subscriber do
     Class.new { include WisperNext.subscriber }.new
   end
 
+  describe 'inclusion' do
+    it 'adds one method' do
+      klass = Class.new
+      expect { klass.include(described_class.new) }.to change { klass.instance_methods.size }.by(1)
+    end
+  end
+
   describe '#on_event' do
     let(:event_name) { 'hello' }
     let(:payload)    { SecureRandom.uuid }
