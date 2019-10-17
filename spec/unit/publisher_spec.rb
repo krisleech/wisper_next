@@ -9,7 +9,7 @@ RSpec.describe WisperNext::Publisher do
     end.new
   end
 
-  let(:listener) { double('listener') }
+  let(:listener) { double('listener', on_event: nil) }
 
   describe '#subscribe' do
     it 'subscribes the given listener' do
@@ -25,6 +25,12 @@ RSpec.describe WisperNext::Publisher do
       it 'raises an error' do
         publisher.subscribe(listener)
         expect { publisher.subscribe(listener) }.to raise_error(described_class::ListenerAlreadyRegisteredError)
+      end
+    end
+
+    describe 'when given listener does not have #on_event method' do
+      it 'raises an error' do
+        expect { publisher.subscribe(double) }.to raise_error(described_class::NoEventHandlerError)
       end
     end
   end

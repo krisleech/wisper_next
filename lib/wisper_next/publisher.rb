@@ -40,6 +40,17 @@ module WisperNext
       end
     end
 
+    # Exception raised when a listener does not have an #on_event method
+    #
+    # @api public
+    #
+    NoEventHandlerError = Class.new(ArgumentError) do
+      # @api private
+      def initialize(listener)
+        super("listener #{listener.inspect} does not have an #on_event method")
+      end
+    end
+
     module Methods
       # returns true when given listener is already subscribed
       #
@@ -63,6 +74,7 @@ module WisperNext
       #
       def subscribe(listener)
         raise ListenerAlreadyRegisteredError.new(listener) if subscribed?(listener)
+        raise NoEventHandlerError.new(listener) unless listener.respond_to?(:on_event)
         subscribers.push(listener)
         self
       end
