@@ -1,4 +1,4 @@
-require_relative 'callable_listener'
+require_relative 'callable_adapter'
 
 module WisperNext
 
@@ -78,7 +78,7 @@ module WisperNext
       # @api public
       #
       def on(name, &block)
-        subscribe(CallableListener.new(name, block))
+        subscribe(CallableAdapter.new(name, block))
         self
       end
 
