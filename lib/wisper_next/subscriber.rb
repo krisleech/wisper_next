@@ -1,4 +1,4 @@
-require_relative 'desugar_arguments'
+require_relative 'cast_to_options'
 
 module WisperNext
   class Subscriber < Module
@@ -6,11 +6,11 @@ module WisperNext
     EmptyHash = {}.freeze
 
     def initialize(*args)
-      options = DesugarArguments.(args)
+      options = CastToOptions.(args)
 
       strict      = options.fetch(:strict, true)
-      broadcaster = resolve_broadcaster(options)
       prefix      = options.fetch(:prefix, false)
+      broadcaster = resolve_broadcaster(options)
 
       # maps event to another method
       #

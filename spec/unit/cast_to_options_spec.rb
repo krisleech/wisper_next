@@ -1,4 +1,4 @@
-RSpec.describe WisperNext::DesugarArguments do
+RSpec.describe WisperNext::CastToOptions do
   subject { described_class }
 
   describe '#call' do

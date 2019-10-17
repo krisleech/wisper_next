@@ -1,6 +1,6 @@
 module WisperNext
   # @api private
-  class DesugarArguments
+  class CastToOptions
     # @example
     #
     #   def call(*args)
