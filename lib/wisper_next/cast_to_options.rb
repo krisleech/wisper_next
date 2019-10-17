@@ -4,7 +4,7 @@ module WisperNext
     # @example
     #
     #   def call(*args)
-    #     DesugarArguments.call(args)
+    #     CastToOptions.call(args)
     #   end
     #
     #   call(:strict, :async: false) # => { strict: true, async: false }
