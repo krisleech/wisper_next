@@ -2,7 +2,6 @@ require_relative 'cast_to_options'
 
 module WisperNext
   class Subscriber < Module
-    DefaultBroadcasterKey = :send
     EmptyHash = {}.freeze
 
     def initialize(*args)
@@ -45,19 +44,22 @@ module WisperNext
     private
 
     def resolve_broadcaster(options)
-      if options.has_key?(:async)
-        broadcaster_opts = options[:async].is_a?(Hash) ? options[:async] : EmptyHash
-        broadcaster = :async
-      else
-        broadcaster = options.fetch(:broadcaster, DefaultBroadcasterKey)
-        broadcaster_opts = EmptyHash
-      end
+      value = options[:async] || options[:broadcaster] || SendBroadcaster.new
 
-      if broadcaster.is_a?(Symbol)
-        Kernel.const_get("::#{self.class.name}::#{broadcaster.to_s.capitalize}Broadcaster").new(broadcaster_opts)
+      case value
+      when Hash
+        broadcaster_for(:async, value)
+      when TrueClass
+        broadcaster_for(:async)
+      when Symbol, String
+        broadcaster_for(value)
       else
-        broadcaster
+        value
       end
+    end
+
+    def broadcaster_for(name, opts = EmptyHash)
+      self.class.const_get("#{name.to_s.capitalize}Broadcaster").new(opts)
     end
   end
 end
