@@ -1,5 +1,3 @@
-require_relative 'callable_adapter'
-
 module WisperNext
 
   # Extension to provide objects with subscription and publishing capabilties
@@ -115,3 +113,5 @@ module WisperNext
     end
   end
 end
+
+require_relative 'publisher/callable_adapter'

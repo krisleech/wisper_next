@@ -1,4 +1,4 @@
-RSpec.describe WisperNext::CallableAdapter do
+RSpec.describe WisperNext::Publisher::CallableAdapter do
   subject { described_class.new(event_name, callable) }
 
   let(:callable) { double }
