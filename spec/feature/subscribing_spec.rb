@@ -1,5 +1,3 @@
-require 'securerandom'
-
 RSpec.describe 'publishing' do
   let(:publisher) do
     Class.new do

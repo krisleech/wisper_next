@@ -9,5 +9,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Added: Ability for an object to publish events
 - Added: Ability for an object to map from events to methods
-
+- Added: An Event object for creating global pub/sub
 

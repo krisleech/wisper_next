@@ -1,5 +1,3 @@
-require 'securerandom'
-
 RSpec.describe WisperNext::Subscriber do
   subject(:subscriber) do
     Class.new { include WisperNext.subscriber }.new

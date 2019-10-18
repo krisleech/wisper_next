@@ -109,6 +109,16 @@ include Wisper.subscriber(async: :true)
 If you are interested in building an async adapter and releasing it as a gem
 please get in touch.
 
+### Global Subscriptions
+
+```ruby
+EVENTS = WisperNext::Events.new
+
+EVENTS.subscribe(MyListener.new)
+
+EVENTS.broadcast('user_promoted', user: user)
+```
+
 #### Passing options
 
 If the value for an option being passed to subscriber is `true` then you can

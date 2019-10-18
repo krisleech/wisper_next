@@ -1,6 +1,7 @@
 require "wisper_next/version"
 require 'wisper_next/publisher'
 require 'wisper_next/subscriber'
+require 'wisper_next/events'
 
 module WisperNext
   class Error < StandardError; end

@@ -2,6 +2,7 @@ require "bundler/setup"
 require "wisper_next"
 
 require 'pry' unless ENV['CI']
+require 'securerandom'
 
 RSpec.configure do |config|
   config.order = :random

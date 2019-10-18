@@ -1,5 +1,3 @@
-require 'securerandom'
-
 RSpec.describe WisperNext::Publisher do
   subject(:publisher) do
     Class.new do
