@@ -128,6 +128,11 @@ EVENTS.subscribe(MyListener.new)
 EVENTS.broadcast('user_promoted', user: user)
 ```
 
+## Security
+
+* gem releases are [signed]()
+* commits are GPG [signed]()
+
 ## Development
 
 ## Contributing

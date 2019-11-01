@@ -24,4 +24,11 @@ Gem::Specification.new do |spec|
   spec.bindir        = "exe"
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
+
+  signing_key = File.expand_path(ENV['HOME'].to_s + '/.ssh/gem-private_key.pem')
+
+  if File.exist?(signing_key)
+    spec.signing_key = signing_key
+    spec.cert_chain  = ['keys/gem-public_cert.pem']
+  end
 end
