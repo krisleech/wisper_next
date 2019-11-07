@@ -130,8 +130,8 @@ EVENTS.broadcast('user_promoted', user: user)
 
 ## Security
 
-* gem releases are [signed]()
-* commits are GPG [signed]()
+* gem releases are [signed](https://gitlab.com/kris.leech/wisper_next/blob/master/keys/gem-public_cert.pem)
+* commits are GPG [signed](https://gitlab.com/kris.leech/wisper_next/blob/master/keys/kris.leech.gpg.public)
 
 ## Development
 
